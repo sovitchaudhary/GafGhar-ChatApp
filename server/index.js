@@ -10,6 +10,17 @@ const app = express();
 const port = process.env.PORT || 5001;
 const databaseURL = process.env.DATABASE_URL;
 
+app.use(
+  cors({
+    origin: [process.env.ORIGIN],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
+
+app.use(cookieParser());
+app.use(express.json());
+
 const server = app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
