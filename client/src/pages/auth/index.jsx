@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import { apiClient } from "@/lib/api-client";
-import { SIGNUP_ROUTE } from "@/utils/constants";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 import { TabsContent, TabsTrigger } from "@radix-ui/react-tabs";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -14,6 +14,20 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  //login validation
+  const validatelogin = () => {
+    if (!email.length) {
+      toast.error("Email is required.");
+      return false;
+    }
+    if (!password.length) {
+      toast.error("Password is required.");
+      return false;
+    }
+    return true;
+  };
+
+  //Signup Validation
   const validateSignup = () => {
     if (!email.length) {
       toast.error("Email is required.");
@@ -30,11 +44,24 @@ const Auth = () => {
     return true;
   };
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    if (validatelogin()) {
+      const response = await apiClient.post(
+        LOGIN_ROUTE,
+        { email, password },
+        { withCredentials: true }
+      );
+      console.log({ response });
+    }
+  };
 
   const handleSignup = async () => {
     if (validateSignup()) {
-      const response = await apiClient.post(SIGNUP_ROUTE, { email, password });
+      const response = await apiClient.post(
+        SIGNUP_ROUTE,
+        { email, password },
+        { withCredentials: true }
+      );
       console.log({ response });
     }
   };
