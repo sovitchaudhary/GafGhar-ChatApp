@@ -7,9 +7,11 @@ import { apiClient } from "@/lib/api-client";
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 import { TabsContent, TabsTrigger } from "@radix-ui/react-tabs";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,6 +53,10 @@ const Auth = () => {
         { email, password },
         { withCredentials: true }
       );
+      if (response.data.user.id) {
+        if (response.data.user.profileSetup);
+        else navigate("/profile");
+      }
       console.log({ response });
     }
   };
@@ -62,6 +68,9 @@ const Auth = () => {
         { email, password },
         { withCredentials: true }
       );
+      if (response.status === 201) {
+        navigate("/profile");
+      }
       console.log({ response });
     }
   };
@@ -80,7 +89,7 @@ const Auth = () => {
             </p>
           </div>
           <div className="flex items-center justify-center w-full">
-            <Tabs className="w-3/4">
+            <Tabs className="w-3/4" defaultValue="login">
               <TabsList className="bg-transparent rounded-none w-full">
                 <TabsTrigger
                   value="login"
