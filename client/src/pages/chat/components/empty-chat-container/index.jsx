@@ -13,7 +13,7 @@ const EmptyChatContainer = () => {
       />
       <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-10 lg:text-4xl text-3xl transition-all duration-300 text-center ">
         <h3 className="poppins-medium">
-            Hi<span className="text-purple-500">!</span> Welcome to<span className="text-purple-500"> Hello</span> Chat<span className="text-purple-500">.</span>
+            Hi<span className="text-purple-500">!</span> Welcome to<span className="text-purple-500"> GafGhar</span> <span className="text-purple-500">.</span>
         </h3>
       </div>
     </div>
