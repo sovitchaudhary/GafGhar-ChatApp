@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileInfo from "./components/profile-info";
-import NewDM from "../chat-container/components/new-dm";
+import NewDM from "./components/new-dm";
 
 const ContactsContainer = () => {
   return (
