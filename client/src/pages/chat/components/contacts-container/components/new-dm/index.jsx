@@ -44,7 +44,7 @@ const NewDM = () => {
 
   const selectNewContact = (contact) => {
     setOpenNewContactModal(false);
-    setSelectedChatType(contact);
+    setSelectedChatType("contact");
     setSelectedChatData(contact);
     setSearchedContacts([]);
   };
