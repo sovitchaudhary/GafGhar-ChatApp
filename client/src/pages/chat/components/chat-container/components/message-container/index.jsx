@@ -1,8 +1,10 @@
 import { apiClient } from "@/lib/api-client";
 import { useAppStore } from "@/store";
-import { GET_ALL_MESSAGES_ROUTE } from "@/utils/constants";
+import { GET_ALL_MESSAGES_ROUTE, HOST } from "@/utils/constants";
 import moment from "moment";
 import { useEffect, useRef } from "react";
+import { MdFolderZip } from "react-icons/md";
+import { IoMdArrowRoundDown } from "react-icons/io";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -40,6 +42,12 @@ const MessageContainer = () => {
     }
   }, [selectedChatMessages]);
 
+  const checkIfImage = (filePath) => {
+    const imageRegex =
+      /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
+    return imageRegex.test(filePath);
+  };
+
   const renderMessages = () => {
     let lastDate = null;
 
@@ -60,8 +68,16 @@ const MessageContainer = () => {
     });
   };
 
+  const downloadFile = () => {};
+
+  //render part
+
   const renderDMMessages = (message) => (
-    <div className={`${message.sender === selectedChatData._id ? "text-left" : "text-right"}`}>
+    <div
+      className={`${
+        message.sender === selectedChatData._id ? "text-left" : "text-right"
+      }`}
+    >
       {message.messageType === "text" && (
         <div
           className={`${
@@ -73,7 +89,38 @@ const MessageContainer = () => {
           {message.content}
         </div>
       )}
-      <div className="text-xs text-gray-600">{moment(message.timestamp).format("LT")}</div>
+      {message.messageType === "file" && (
+        <div
+          className={`${
+            message.sender !== selectedChatData._id
+              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+              : "bg-[#2a2b33]/5 text-white/80 border-[#ffff]/50 "
+          } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}
+        >
+          {checkIfImage(message.fileUrl) ? (
+            <div className="cursor-pointer">
+              <img src={`${HOST}/${message.fileUrl}`} />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap4 ">
+              <span className="text-white/8 text-3xl bg-black/20 rounded-full p-3">
+                <MdFolderZip />
+              </span>
+              <span>{message.fileUrl.split("/").pop()}</span>
+              <span
+                className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer translate-all duration-300"
+                onClick={() => downloadFile(message.fileUrl)}
+              >
+                {" "}
+                <IoMdArrowRoundDown />{" "}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+      <div className="text-xs text-gray-600">
+        {moment(message.timestamp).format("LT")}
+      </div>
     </div>
   );
 
