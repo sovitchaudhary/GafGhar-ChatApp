@@ -68,7 +68,19 @@ const MessageContainer = () => {
     });
   };
 
-  const downloadFile = () => {};
+  const downloadFile = async (url) => {
+    const response = await apiClient.get(`${HOST}/${url}`, {
+      responseType: "blob",
+    });
+    const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = urlBlob;
+    link.setAttribute("download", url.split("/").pop());
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(urlBlob);
+  };
 
   //render part
 
@@ -111,8 +123,7 @@ const MessageContainer = () => {
                 className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer translate-all duration-300"
                 onClick={() => downloadFile(message.fileUrl)}
               >
-                {" "}
-                <IoMdArrowRoundDown />{" "}
+                <IoMdArrowRoundDown />
               </span>
             </div>
           )}
